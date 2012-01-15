@@ -17,7 +17,9 @@ class Substitutor3000:
         if m:
             g = m.group(0)
             x = g[2:-1]
-            r = self.mp.get(x) if x else ''
+            r = self.mp.get(x)
+            if r is None:
+                r = ''
             s2 = s.replace(g, r)
             if s != s2:
                 s = self.replace(s2)
