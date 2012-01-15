@@ -1,17 +1,24 @@
 import re
 
 class Substitutor3000:
-    map = dict()
+    mp = dict()
     reVar = '\$\{[^\$]*?\}'
     p = re.compile(reVar)
-    
+
     def put(self, key, value):
-        map[key] = value
-        
+        self.mp[key] = value
+
     def get(self, key):
-        value = key.get(key)
-        return ("") if (value == None) else (self.replace(value))
-    
+        value = self.mp.get(key)
+        return self.replace(value) if value else ''
+
     def replace(self, s):
-        sub = self.p.sub('#', s)
-        return (sub) if (sub == s) else (self.replace(sub))
+        m = self.p.search(s)
+        if m:
+            g = m.group(0)
+            x = g[2:-1]
+            r = self.mp.get(x) if x else ''
+            s2 = s.replace(g, r)
+            if s != s2:
+                s = self.replace(s2)
+        return s
