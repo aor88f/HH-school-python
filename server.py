@@ -1,12 +1,17 @@
 import asyncore
 import socket
+import substitutor3000
 
-class EchoHandler(asyncore.dispatcher_with_send):
+_sbst = substitutor3000.Substitutor3000()
+
+class Handler(asyncore.dispatcher_with_send):
 
     def handle_read(self):
-        data = self.recv(8192)
+        data = self.recv(8192).rstrip()
         if data:
-            self.send('OK\n')
+            pass
+        self.close()
+                
 
 class Server(asyncore.dispatcher):
 
@@ -24,7 +29,10 @@ class Server(asyncore.dispatcher):
         else:
             sock, addr = pair
             print 'Incoming connection from %s' % repr(addr)
-            handler = EchoHandler(sock)            
+            handler = Handler(sock)                      
 
     def run(self):
         asyncore.loop()
+
+#server = Server('', 12322)
+#server.run()
