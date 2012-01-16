@@ -9,9 +9,21 @@ class Handler(asyncore.dispatcher_with_send):
     def handle_read(self):
         data = self.recv(8192).rstrip()
         if data:
-            pass
+            com, param = self._sep(data)
+            param, param2 = self._sep(param)
+            if com == 'GET':
+                pass
+            elif com == 'PUT':
+                pass
+            elif com == 'SET':
+                pass
+            
         self.close()
-                
+
+    def _sep(self, s):
+        i = s.find(' ')
+        return (s, '') if (i == -1) else (s[:i], s[i+1:])
+
 
 class Server(asyncore.dispatcher):
 
@@ -34,10 +46,6 @@ class Server(asyncore.dispatcher):
     def run(self):
         asyncore.loop()
 
-    def _sep(self, s):
-        i = s.find(' ')
-        return (s, '') if (i == -1) else (s[:i], s[i+1:])
-
-#server = Server('', 12322)
-#server.run()
+server = Server('', 12322)
+server.run()
 
