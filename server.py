@@ -1,22 +1,36 @@
 import asyncore
 import socket
+import time
 import substitutor3000
 
 _sbst = substitutor3000.Substitutor3000()
 
 class Handler(asyncore.dispatcher_with_send):
-
+    sleep = 0
+    
     def handle_read(self):
+        
         data = self.recv(8192).rstrip()
+        time.sleep(self.sleep)
         if data:
             com, param = self._sep(data)
             param, param2 = self._sep(param)
             if com == 'GET':
-                pass
+                self.send('VALUE\n')
+                self.send(_sbst.get(param) + '\n')
             elif com == 'PUT':
-                pass
+                self.send('OK\n')
+                _sbst.put(param, param2)
             elif com == 'SET':
-                pass
+                if param == 'SLEEP':
+                    self.send('OK\n')
+                    try:
+                        self.sleep = int(param2) / 1000.0
+                        if self.sleep < 0:
+                            raise Exception()
+                    except Exception:
+                        self.sleep = 0
+                    
             
         self.close()
 
@@ -46,6 +60,6 @@ class Server(asyncore.dispatcher):
     def run(self):
         asyncore.loop()
 
-server = Server('', 12322)
-server.run()
+#server = Server('', 12322)
+#server.run()
 
