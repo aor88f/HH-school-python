@@ -68,6 +68,6 @@ class Server(asyncore.dispatcher):
     def run(self):
         asyncore.loop()
 
-server = Server('', 12322)
-server.run()
-
+if __name__ == "__main__":
+    server = Server('', 12322)
+    server.run()
