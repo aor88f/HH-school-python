@@ -34,5 +34,10 @@ class Server(asyncore.dispatcher):
     def run(self):
         asyncore.loop()
 
+    def _sep(self, s):
+        i = s.find(' ')
+        return (s, '') if (i == -1) else (s[:i], s[i+1:])
+
 #server = Server('', 12322)
 #server.run()
+
