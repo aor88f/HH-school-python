@@ -1,12 +1,12 @@
 import server
 
 class Launcher():
-    host = ''
-    port = 0
+    _host = ''
+    _port = 0
 
     def __init__(self, host, port):
-        host = host   
-        port = port   
+        _host = host   
+        _port = port   
         
     def run(self):
-        server.Server(self.host, self.port).run();
+        server.Server(self._host, self._port).run();
