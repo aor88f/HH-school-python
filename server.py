@@ -7,8 +7,8 @@ import substitutor3000
 
 class Handler(asyncore.dispatcher_with_send):
     _sbst = substitutor3000.Substitutor3000()
-    _sleep = 0
     _lock = threading.Lock()
+    _sleep = 0
 
     def handle_read(self):
         data = self.recv(8192).rstrip()
@@ -43,8 +43,10 @@ class Handler(asyncore.dispatcher_with_send):
 
 
 class Server(asyncore.dispatcher):
-
+    _port = None
+    
     def __init__(self, host, port):
+        self._port = port
         asyncore.dispatcher.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.set_reuse_addr()
@@ -58,11 +60,14 @@ class Server(asyncore.dispatcher):
         else:
             sock, addr = pair
             print 'Incoming connection from %s' % repr(addr)
-            handler = Handler(sock)                      
+            handler = Handler(sock)  
+            
+    def port(self):
+        return self._port                    
 
     def run(self):
         asyncore.loop()
 
-#server = Server('', 12322)
-#server.run()
+server = Server('', 12322)
+server.run()
 
