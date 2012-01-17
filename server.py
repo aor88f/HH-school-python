@@ -18,23 +18,22 @@ class Handler(asyncore.dispatcher_with_send):
             param, param2 = self._sep(param)
             if com == 'GET':
                 self._lock.acquire()
-                self.send('VALUE\n')
-                self.send(self._sbst.get(param) + '\n')
+                self.send('VALUE\n' + self._sbst.get(param) + '\n')
                 self._lock.release()
             elif com == 'PUT':
                 self._lock.acquire()
-                self.send('OK\n')
                 self._sbst.put(param, param2)
+                self.send('OK\n')
                 self._lock.release()
             elif com == 'SET':
                 if param == 'SLEEP':
-                    self.send('OK\n')
                     try:
                         self._sleep = int(param2) / 1000.0
                         if self._sleep < 0:
                             raise Exception()
                     except Exception:
-                        self._sleep = 0
+                        self.close()
+                    self.send('OK\n')
         self.close()
 
     def _sep(self, s):
