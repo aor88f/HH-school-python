@@ -23,9 +23,8 @@ class PutGetTest(unittest.TestCase):
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
-        s.send("GET key")
-        self.assertEqual("VALUE\n", recv(s))
-        self.assertEqual("one\n", recv(s))  #WTF?
+        s.send("GET K1")
+        self.assertEqual("VALUE\none\n", recv(s))
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,8 +36,7 @@ class PutGetTest(unittest.TestCase):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("GET keys")
-        self.assertEqual("VALUE\n", recv(s))
-        self.assertEqual("one\n", recv(s))
+        self.assertEqual("VALUE\none \n", recv(s))
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,8 +54,7 @@ class PutGetTest(unittest.TestCase):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("GET keys")
-        self.assertEqual("VALUE\n", recv(s))
-        self.assertEqual("one two\n", recv(s))
+        self.assertEqual("VALUE\none two\n", recv(s))
         s.close()
 
 
