@@ -18,46 +18,46 @@ class PutGetTest(unittest.TestCase):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("PUT K1 one")
-        self.assertEqual("OK", recv(s))
+        self.assertEqual("OK\n", recv(s))
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("GET key")
-        self.assertEqual("VALUE", recv(s))
-        self.assertEqual("one", recv(s))  #WTF?
+        self.assertEqual("VALUE\n", recv(s))
+        self.assertEqual("one\n", recv(s))  #WTF?
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("PUT keys ${K1} ${K2}")
-        self.assertEqual("OK", recv(s))
+        self.assertEqual("OK\n", recv(s))
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("GET keys")
-        self.assertEqual("VALUE", recv(s))
-        self.assertEqual("one ", recv(s))
+        self.assertEqual("VALUE\n", recv(s))
+        self.assertEqual("one\n", recv(s))
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("PUT K2 two")
-        self.assertEqual("OK", recv(s))
+        self.assertEqual("OK\n", recv(s))
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("SET SLEEP 1")
-        self.assertEqual("OK", recv(s))
+        self.assertEqual("OK\n", recv(s))
         s.close()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
         s.send("GET keys")
-        self.assertEqual("VALUE", recv(s))
-        self.assertEqual("one two", recv(s))
+        self.assertEqual("VALUE\n", recv(s))
+        self.assertEqual("one two\n", recv(s))
         s.close()
 
 
