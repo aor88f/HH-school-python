@@ -18,17 +18,17 @@ class Handler(asyncore.dispatcher_with_send):
             param, param2 = self._sep(param)
             if com == 'GET':
                 self._lock.acquire()
-                self.send('VALUE\n')
-                self.send(self._sbst.get(param) + '\n')
+                self.send('VALUE')
+                self.send(self._sbst.get(param))
                 self._lock.release()
             elif com == 'PUT':
                 self._lock.acquire()
-                self.send('OK\n')
+                self.send('OK')
                 self._sbst.put(param, param2)
                 self._lock.release()
             elif com == 'SET':
                 if param == 'SLEEP':
-                    self.send('OK\n')
+                    self.send('OK')
                     try:
                         self._sleep = int(param2) / 1000.0
                         if self._sleep < 0:
@@ -43,7 +43,6 @@ class Handler(asyncore.dispatcher_with_send):
 
 
 class Server(asyncore.dispatcher):
-    _port = None
     
     def __init__(self, host, port):
         self._port = port
@@ -61,9 +60,6 @@ class Server(asyncore.dispatcher):
             sock, addr = pair
             print 'Incoming connection from %s' % repr(addr)
             handler = Handler(sock)  
-            
-    def port(self):
-        return self._port                    
 
     def run(self):
         asyncore.loop()
