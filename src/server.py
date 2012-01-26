@@ -1,5 +1,4 @@
 import asyncore
-import threading
 import socket
 import time
 import substitutor3000
@@ -7,7 +6,6 @@ import substitutor3000
 
 class Handler(asyncore.dispatcher_with_send):
     _sbst = substitutor3000.Substitutor3000()
-    _lock = threading.Lock()
     _sleep = 0
 
     def handle_read(self):
@@ -17,14 +15,10 @@ class Handler(asyncore.dispatcher_with_send):
             com, param = self._sep(data)
             param, param2 = self._sep(param)
             if com == 'GET':
-                self._lock.acquire()
                 self.send('VALUE\n' + self._sbst.get(param) + '\n')
-                self._lock.release()
             elif com == 'PUT':
-                self._lock.acquire()
                 self._sbst.put(param, param2)
                 self.send('OK\n')
-                self._lock.release()
             elif com == 'SET':
                 if param == 'SLEEP':
                     try:
