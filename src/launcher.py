@@ -10,3 +10,5 @@ class Launcher():
         
     def run(self):
         server.Server(self._host, self._port).run();
+
+Launcher('', 12322).run()
