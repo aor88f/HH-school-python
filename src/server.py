@@ -41,9 +41,10 @@ class Handler(asyncore.dispatcher_with_send):
         return (s, '') if (i == -1) else (s[:i], s[i+1:])
 
 
-class Server(asyncore.dispatcher):
+class Server(object, asyncore.dispatcher):
     
     def __init__(self, host, port):
+        object.__init__(self)
         self._port = port
         asyncore.dispatcher.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)

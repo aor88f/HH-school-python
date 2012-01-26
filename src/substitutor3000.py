@@ -1,6 +1,6 @@
 import re
 
-class Substitutor3000:
+class Substitutor3000(object):
     _mp = dict()
     _reVar = '\$\{[^\$]*?\}'
     _p = re.compile(_reVar)
